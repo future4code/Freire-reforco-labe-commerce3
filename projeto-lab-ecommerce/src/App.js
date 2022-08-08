@@ -1,33 +1,13 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import './App.css';
+import './AppStyles.jsx';
 import Header from './components/Header/Header';
 import Home from './Pages/Home/Home';
 import Card from './components/Cards/Card';
 import Carrinho from './Pages/Carrinho/Carrinho'
 import Footer from './components/Footer/Footer';
-
-const DivContainer = styled.div`
-/* background-color: red; */
+import { DivContainer, DivCard } from './AppStyles'
 
 
-`
-const DivCard = styled.div`
-  background-color: #eae7e7;
-  justify-items: center;
-  align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2px;
-
-  @media screen and (min-device-width: 320px) and (max-device-width: 480px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-`
 
 function App() {
   const [inputMinimo, setInputMinimo] = useState(0)
@@ -40,24 +20,35 @@ function App() {
   const [produtos, setProdutos] = useState(
     [
       {       
-        id: 1,
-        nome: "viagem a Marte",
+        key: 1,
+        nome: "viagem a Urano",
         preco: 800.0,
-        imagem: "/img/urano.jpg",                   
+        imagem: "/img/urano1.jpg",
+        quantidade: 1                      
       },
   
       {       
-        id: 2,
+        key: 2,
         nome: "viagem a Saturno",
         preco: 600.0,
-        imagem: "/img/saturno.jpg",                        
+        imagem: "/img/saturno.jpg", 
+        quantidade: 1                          
       },
   
       {       
-        id: 3,
+        key: 3,
         nome: "Viagem a Lua",
         preco: 700.0,
-        imagem: "/img/caminhada-na-lua.jpg",             
+        imagem: "/img/caminhada-na-lua.jpg",
+        quantidade: 1             
+      },
+
+      {       
+        key: 3,
+        nome: "Viagem a marte",
+        preco: 700.0,
+        imagem: "/img/Marte1.jpg",
+        quantidade: 1             
       }
   ]
   );
@@ -103,17 +94,50 @@ function App() {
    
 
   const adicionarNoCarrinho = (produto) => {
-    console.log("adicionar")
-    
-    const novoProduto = [...carrinho, produto]
-    setCarrinho(novoProduto)
+   
+     const novoProduto = carrinho.filter((item) => {
+      if (item.key === produto.key) {
+        return item
+      } else {
+        return false
+      }
+     });
+     if (novoProduto.length === 0) {
+      produto.quantidade = 1;
+      const novoCarrinho = [produto, ...carrinho];
+      setCarrinho(novoCarrinho)
+     } else {
+      const novoCarrinho = carrinho.map((item) => {
+        if (produtos.key === item.key) {
+          return {...item, quantidade: item.quantidade + 1};
+        } else {
+          return item;
+        }
+      });
+      setCarrinho(novoCarrinho);
+     }
+    //   key: produto.key,
+    //   nome: produto.nome,
+    //   preco: produto.preco,
+    //   imagem: produto.imagem,
+      
+    // };
+    // const novosProdutos = [...produto, novoProduto]
+    // setProdutos(novosProdutos)
+    //const produtoIndex = produtos.find(item => item.key === produto.key)
+  
+  // = [...carrinho, produto]
+  //   setCarrinho(novoProduto)
+     }
+   
 
-    
-  }
+  
+  
+
 
   const removerItensDoCarrinho = (itemParaRemover) => {
     if(itemParaRemover.qtd === 1){
-      const novoCarrinho = itensCarrinho.filter((item) => {
+      const novoCarrinho = carrinho.filter((item) => {
         if(item.id !== itemParaRemover.id){
           return item;
         }else {
@@ -122,9 +146,9 @@ function App() {
       });
       setItensCarrinho(novoCarrinho)
     } else {
-      const novoCarrinho = itensCarrinho.map ((item) => {
+      const novoCarrinho = carrinho.map (item => {
         if(itemParaRemover.id === item.id && item.qtd >= 1){
-          return{...itemParaRemover, qtd:item.qtd -1};
+          return{...item, qtd: item.qtd -1};
         } else{
           return item;
         }
@@ -133,14 +157,21 @@ function App() {
     } 
     }
 
-    const produtosMapeados = produtos.map((item) => {
-      return (
-        <Card 
-         produto={item}
-         adicionarNoCarrinho={adicionarNoCarrinho}
-        />
-      )
-    }); 
+     //if (produtoIndex) {
+      const produtosMapeados = produtos.map((item, produto) => {
+            if (item.key === produto.key) {
+              item.quantidade += 1;
+            }
+            return (
+              <Card  
+               produto={item}
+               adicionarNoCarrinho={adicionarNoCarrinho}
+              />
+            )
+          });
+          // setProdutos()
+
+    
   
   return (
     
@@ -162,6 +193,7 @@ function App() {
       <Carrinho
        itensCarrinho={Carrinho}
        vlrTotProd={vlrTotProd}
+       adicionarNoCarrinho={adicionarNoCarrinho}
        removerItensDoCarrinho={removerItensDoCarrinho}
      
       />
