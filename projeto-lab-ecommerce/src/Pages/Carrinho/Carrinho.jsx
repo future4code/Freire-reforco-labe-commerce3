@@ -6,11 +6,11 @@ import { CarrinhoContainer } from './CarrinhoStyles'
 const Carrinho = (props) => {
   const itensDoCarrinho = props.carrinho && props.carrinho.map(item => {
     return <Itens
-    key={item.id}
-    qtdProd={3}
+    key={item}
+    qtdProd={item.qtd}
     nomeProd={item.nome}
     precoProd={item.preco}
-    onClick = {() => props.removerItemDoCarrinho(item.id)}
+    onClick = {() => props.removerItemDoCarrinho(item)}
     
     />   
   })
