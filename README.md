@@ -3,7 +3,7 @@
 **Equipe:**
 
 - Adriana de Lima
-- Mariluci
+- Mariluci 
 - Gustavo Willian F. Rodrigues
 
 **O que funciona**
@@ -36,6 +36,6 @@ Site de e-Commerce com os recursos React.js:
 
 **Link Surge**
 
-imaginary-disgust.s
+https://actually-plastic.surge.sh/
 
 **Imagens do Site**
